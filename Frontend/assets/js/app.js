@@ -1,23 +1,61 @@
 const choice = document.querySelector("#choice")
-console.log("coucou from apijs")
-fetch("https://chatbotapi-3bef.onrender.com/api/v1/dialogs")
-.then(response => response.json())
+const inputQuestion = document.querySelector("#question")
+const question = document.querySelector(".question")
+const answer = document.querySelector(".answer")
+
+let contentWelcome = document.querySelector("#welcome")
+const word = contentWelcome.textContent;
+const length = word.length;
+let count = 0;
+contentWelcome.textContent = "";
+
+const write = setInterval(() => {
+  contentWelcome.textContent += word[count]
+  count += 1;
+  if(count > length - 1) {
+    clearInterval(write)
+  }
+  console.log(count);
+}, 80);
+
+const fetchUrl = async (url)=>{
+  const result = await fetch(url)
+  const data = await result.json()
+  return data
+}
+
+// fetch("https://chatbotapi-3bef.onrender.com/api/v1/dialogs")
+// .then(response => response.json())
+fetchUrl("https://chatbotapi-3bef.onrender.com/api/v1/dialogs")
 .then(data=>{
-  // console.log(data)
+  
   data.message.forEach(dialogs =>{
-    // console.log(dialog)
+    
     choice.innerHTML += `<option value="${dialogs.question}">`
-  });
+    });
+    inputQuestion.addEventListener("change", e => {
+      console.log(e.target.value);
+      data.message.forEach((dialogs) => {
+        
+        if(e.target.value === dialogs.question){
+          question.innerHTML = `<p>${dialogs.question}</p>`
+          console.log(dialogs.answer);
+        answer.innerHTML = `<p>${dialogs.answer}</p>`;
+        }
+      });
+    })
 })
 .catch(error => console.log(error))
 
-const chuck = document.getElementById("#chuck")
+const chuck = document.getElementById("chuck")
 fetch("https://api.chucknorris.io/jokes/random")
 .then(response =>response.json())
-.then(joke=>{
-  chuck.innerHTML += `<option value="${response.chuck}">`
-  console.log(joke)
-})
+.then(data=>chuck.innerHTML = data.value)
+.catch(error => console.log(error))
+
+
+const data = fetchUrl("https://api.chucknorris.io/jokes/random")
+.then(data => console.log("then", data))
 
 
 // const dialogs=[
