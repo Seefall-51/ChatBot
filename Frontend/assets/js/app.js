@@ -1,7 +1,7 @@
-const choice = document.querySelector("#choice")
-const inputQuestion = document.querySelector("#question")
-const question = document.querySelector(".question")
-const answer = document.querySelector(".answer")
+const datalist = document.querySelector("#datalist");
+const question = document.querySelector(".question");
+const answer = document.querySelector(".answer");
+const inputdialog = document.querySelector("#inputdialog");
 
 let contentWelcome = document.querySelector("#welcome")
 const word = contentWelcome.textContent;
@@ -18,34 +18,25 @@ const write = setInterval(() => {
   console.log(count);
 }, 80);
 
-const fetchUrl = async (url)=>{
-  const result = await fetch(url)
-  const data = await result.json()
-  return data
-}
+fetch("https://chatbot-backbdd.onrender.com/api/v1/dialogs")
+.then(response=>response.json())
+.then(({data})=>{
+    console.log(data);
+    data.forEach(dialog => {
+        datalist.innerHTML += `<option value="${dialog.question}">`
+    })
 
-// fetch("https://chatbotapi-3bef.onrender.com/api/v1/dialogs")
-// .then(response => response.json())
-fetchUrl("https://chatbotapi-3bef.onrender.com/api/v1/dialogs")
-.then(data=>{
-  
-  data.message.forEach(dialogs =>{
-    
-    choice.innerHTML += `<option value="${dialogs.question}">`
-    });
-    inputQuestion.addEventListener("change", e => {
-      console.log(e.target.value);
-      data.message.forEach((dialogs) => {
-        
-        if(e.target.value === dialogs.question){
-          question.innerHTML = `<p>${dialogs.question}</p>`
-          console.log(dialogs.answer);
-        answer.innerHTML = `<p>${dialogs.answer}</p>`;
-        }
-      });
+    inputdialog.addEventListener("change", e=>{
+        question.innerHTML=document.querySelector(".form-question").value
+        data.forEach(dialog =>{
+            if(e.target.value === dialog.question){
+                console.log(dialog.answer)
+                answer.innerHTML = dialog.answer
+            }
+        })
     })
 })
-.catch(error => console.log(error))
+.catch(error=>console.log(error))
 
 const chuck = document.getElementById("chuck")
 fetch("https://api.chucknorris.io/jokes/random")
@@ -56,46 +47,3 @@ fetch("https://api.chucknorris.io/jokes/random")
 
 const data = fetchUrl("https://api.chucknorris.io/jokes/random")
 .then(data => console.log("then", data))
-
-
-// const dialogs=[
-//   {
-//     question:"salut",
-//     answer:"Salut"
-//   },
-//   {
-//     question:"ça va ?",
-//     answer:"Plutôt bien !"
-//   },
-//   {
-//     question:"La terre est ronde?",
-//     answer:"Non, la terre est plate."
-//   },
-//   {
-//     question:"titi",
-//     answer:"toto"
-//   }
-// ];
-
-// // const choice = document.querySelector("#choice");
-// const question = document.querySelector(".question");
-// const answer = document.querySelector(".answer");
-// const formDialogue = document.querySelector('#formDialogue');
-
-// dialogs.forEach((dialog) => {
-//   console.log(dialog);
-//   choice.innerHTML += `<option value="${dialog.question}">`;
-// });
-
-// formDialogue.addEventListener('change', e=> {
-//   question.textContent = e.target.value;
-//   console.log(e.target.value);
-// }) 
-
-// const search = (question)=>{
-//   dialogs.forEach(dialog =>{
-//     if(dialog.question === question){
-//       answer.innerHTML = `<p><b>${dialog.answer}</b></p>`
-//     }
-//   })
-// }

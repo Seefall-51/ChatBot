@@ -9,17 +9,17 @@
      <title>ChatBot</title>
  </head>
  <body>
-    <div class="chat-form">
+    <div class="test">
         <h2 id="welcome">ChatBot</h2>
-        <div class="dialog">
+        <div class="message" id="dialoganswer">
             <div class="question">
                 <div class="loader"></div>
             </div>
             <div class="answer"></div>
         </div>
-        <form action="" autocomplete="off" id="formDialogue">
-            <input list="choice" name="choice" class="form-question" type="search" id="question">
-            <datalist id="choice"></datalist>
+        <form autocomplete="off" id="form-api">
+            <input list="datalist" name="request" class="form-question" type="search" id="inputdialog">
+            <datalist id="datalist"></datalist>
         </form>
     </div>
     <p>Les blagues de Tonton Chuck</p>
